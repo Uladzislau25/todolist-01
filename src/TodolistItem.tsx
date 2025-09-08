@@ -1,4 +1,4 @@
-import { Task } from "./App";
+import {Task} from "./App";
 
 type Props = {
     title: string
@@ -6,7 +6,7 @@ type Props = {
     date?: string
 }
 
-export const TodolistItem = ({title, tasks, date}: Props ) => {
+export const TodolistItem = ({title, tasks, date}: Props) => {
     return (
         <div>
             <h3>{title}</h3>
@@ -15,18 +15,14 @@ export const TodolistItem = ({title, tasks, date}: Props ) => {
                 <button>+</button>
             </div>
             <ul>
-                <li>
-                    <input type="checkbox" checked={tasks[0].isDone}/>
-                    <span>{tasks[0].title}</span>
-                </li>
-                <li>
-                    <input type="checkbox" checked={tasks[1].isDone}/>
-                    <span>{tasks[1].title}</span>
-                </li>
-                <li>
-                    <input type="checkbox" checked={tasks[2].isDone}/>
-                    <span>{tasks[2].title}</span>
-                </li>
+                {tasks.map(task => {
+                    return (
+                        <li key={task.id}>
+                            <input type="checkbox" checked={task.isDone}/>
+                            <span>{task.title}</span>
+                        </li>
+                    )
+                })}
             </ul>
             <div>
                 <button>All</button>
