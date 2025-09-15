@@ -5,10 +5,11 @@ type Props = {
     title: string
     tasks: Task[]
     date?: string
+    deleteTask: (taskId: number) => void
     changeFilter: (filter: filterType) => void
 }
 
-export const TodolistItem = ({title, tasks, date, changeFilter}: Props) => {
+export const TodolistItem = ({title, tasks, date, deleteTask, changeFilter}: Props) => {
     const taskList = tasks.length === 0
     ? <span>is empty</span>
         : <ul>
@@ -17,7 +18,7 @@ export const TodolistItem = ({title, tasks, date, changeFilter}: Props) => {
                     <li key={task.id}>
                         <input type="checkbox" checked={task.isDone}/>
                         <span>{task.title}</span>
-                        <Button title={'x'} onClickFunction={()=>{}}/>
+                        <Button title={'x'} onClickFunction={()=>{deleteTask(task.id)}}/>
                     </li>
 
                 )
