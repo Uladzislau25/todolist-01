@@ -8,6 +8,8 @@ export type Task = {
 }
 
 export const App = () => {
+
+
     const tasks1 = [
         {id: 1, title: 'HTML&CSS', isDone: true},
         {id: 2, title: 'JS', isDone: true},
@@ -17,10 +19,10 @@ export const App = () => {
         {id: 6, title: 'RTK query', isDone: false},
     ]
 
+
     return (
         <div className="app">
             <TodolistItem title="What to learn" tasks={tasks1} date="27.01.2027"/>
         </div>
     )
 }
-
