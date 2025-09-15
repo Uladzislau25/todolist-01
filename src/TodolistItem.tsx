@@ -1,13 +1,14 @@
-import {Task} from "./App";
+import {filterType, Task} from "./App";
 import {Button} from "./button.tsx";
 
 type Props = {
     title: string
     tasks: Task[]
     date?: string
+    changeFilter: (filter: filterType) => void
 }
 
-export const TodolistItem = ({title, tasks, date}: Props) => {
+export const TodolistItem = ({title, tasks, date, changeFilter}: Props) => {
     const taskList = tasks.length === 0
     ? <span>is empty</span>
         : <ul>
@@ -32,9 +33,9 @@ export const TodolistItem = ({title, tasks, date}: Props) => {
             </div>
             {taskList}
             <div>
-                <Button title={"All"}/>
-                <Button title={"Active"}/>
-                <Button title={"Completed"}/>
+                <Button onClickFunction={()=>(changeFilter('all'))} title={"All"}/>
+                <Button onClickFunction={()=>(changeFilter('active'))} title={"Active"}/>
+                <Button onClickFunction={()=>(changeFilter('completed'))} title={"Completed"}/>
             </div>
             <div>{date}</div>
         </div>
