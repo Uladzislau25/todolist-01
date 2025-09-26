@@ -1,19 +1,52 @@
-import {filterType, Task} from "./App";
+import {Task} from "./App";
 import {Button} from "./button.tsx";
+import {useState} from "react";
+
+
+
+type filterType= 'all' | 'active' | 'completed' | 'deleted';
 
 type Props = {
     title: string
     tasks: Task[]
     date?: string
-    deleteTask: (taskId: number) => void
-    changeFilter: (filter: filterType) => void
+    setTasks: (tasks: Task[]) => void
 }
 
-export const TodolistItem = ({title, tasks, date, deleteTask, changeFilter}: Props) => {
-    const taskList = tasks.length === 0
-    ? <span>is empty</span>
-        : <ul>
-            {tasks.map(task => {
+export const TodolistItem = ({title, tasks, date, setTasks}: Props) => {
+
+    // Удаление тасок по Id
+    const deleteTask = (taskId: number) => {
+        const filteredTasks = tasks.filter(task => {
+            return task.id !== taskId
+        })
+        setTasks(filteredTasks);
+    }
+
+
+    // Фильтрация тасок по типу
+    const [filter, setFilter] = useState<filterType>('all')
+
+    const changeFilter = (filter: filterType) => {
+        setFilter(filter)
+    }
+
+    let filterTasks = tasks
+    if(filter === 'active'){
+        filterTasks = tasks.filter(task => !task.isDone)
+    }
+    if (filter === 'completed'){
+        filterTasks = tasks.filter(task => task.isDone)
+    }
+    if (filter === 'deleted'){
+        filterTasks = []
+    }
+
+
+
+    const taskList = filterTasks.length === 0 ? <span>is empty</span> :
+        <ul>
+            {filterTasks.map(task => {
                 return (
                     <li key={task.id}>
                         <input type="checkbox" checked={task.isDone}/>
@@ -37,6 +70,7 @@ export const TodolistItem = ({title, tasks, date, deleteTask, changeFilter}: Pro
                 <Button onClickFunction={()=>(changeFilter('all'))} title={"All"}/>
                 <Button onClickFunction={()=>(changeFilter('active'))} title={"Active"}/>
                 <Button onClickFunction={()=>(changeFilter('completed'))} title={"Completed"}/>
+                <Button onClickFunction={()=>(changeFilter('deleted'))} title={"Delete all tasks"}/>
             </div>
             <div>{date}</div>
         </div>
