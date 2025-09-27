@@ -22,6 +22,7 @@ export const TodolistItem = ({title, tasks, date, setTasks}: Props) => {
         })
         setTasks(filteredTasks);
     }
+
     // Добавление новых тасок
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const addTask = (title: string) => {
@@ -45,11 +46,9 @@ export const TodolistItem = ({title, tasks, date, setTasks}: Props) => {
 
     // Фильтрация тасок по типу
     const [filter, setFilter] = useState<filterType>('all')
-
     const changeFilter = (filter: filterType) => {
         setFilter(filter)
     }
-
     let filterTasks = tasks
     if (filter === 'active') {
         filterTasks = tasks.filter(task => !task.isDone)
