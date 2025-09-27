@@ -1,6 +1,6 @@
 import {Task} from "./App";
 import {Button} from "./button.tsx";
-import {useState} from "react";
+import {ChangeEvent, useState, KeyboardEvent} from "react";
 import {v1} from "uuid";
 
 
@@ -22,12 +22,25 @@ export const TodolistItem = ({title, tasks, date, setTasks}: Props) => {
         })
         setTasks(filteredTasks);
     }
+    // Добавление новых тасок
     const [newTaskTitle, setNewTaskTitle] = useState('')
-
     const addTask = (title: string) => {
         let newTask = {id: v1(), title, isDone: false};
         let newTasks = [newTask, ...tasks];
         setTasks(newTasks);
+    }
+    const addTaskHandler = () => {
+        addTask(newTaskTitle);
+        setNewTaskTitle("")
+    }
+    const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setNewTaskTitle(e.target.value)
+    }
+    const onKeyUpHandler = (e: KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            addTask(newTaskTitle);
+            setNewTaskTitle("")
+        }
     }
 
     // Фильтрация тасок по типу
@@ -70,22 +83,12 @@ export const TodolistItem = ({title, tasks, date, setTasks}: Props) => {
             <div>
                 <input
                     value={newTaskTitle}
-                    onChange={(e) => {
-                        setNewTaskTitle(e.target.value)
-                    }}
-                    onKeyPress={(e)=>{
-                        if(e.key === 'Enter'){
-                            addTask(newTaskTitle);
-                            setNewTaskTitle("")
-                        }
-                    }}
+                    onChange={onNewTitleChangeHandler}
+                    onKeyUp={onKeyUpHandler}
                 />
                 <Button
                     title={"+"}
-                    onClickFunction={() => {
-                        addTask(newTaskTitle);
-                        setNewTaskTitle("")
-                    }}/>
+                    onClickFunction={addTaskHandler}/>
             </div>
             {taskList}
             <div>
@@ -96,6 +99,5 @@ export const TodolistItem = ({title, tasks, date, setTasks}: Props) => {
             </div>
             <div>{date}</div>
         </div>
-    );
+    )
 };
-
