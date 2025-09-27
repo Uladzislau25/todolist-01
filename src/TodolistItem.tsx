@@ -1,6 +1,7 @@
 import {Task} from "./App";
 import {Button} from "./button.tsx";
 import {useState} from "react";
+import {v1} from "uuid";
 
 
 type Props = {
@@ -15,13 +16,17 @@ type filterType = 'all' | 'active' | 'completed' | 'deleted';
 export const TodolistItem = ({title, tasks, date, setTasks}: Props) => {
 
     // Удаление тасок по Id
-    const deleteTask = (taskId: number) => {
+    const deleteTask = (taskId: string) => {
         const filteredTasks = tasks.filter(task => {
             return task.id !== taskId
         })
         setTasks(filteredTasks);
     }
-
+ const addTask = () => {
+        let newTask = {id: v1(), title: 'New Task', isDone: false};
+        let newTasks = [newTask, ...tasks];
+        setTasks(newTasks);
+ }
 
     // Фильтрация тасок по типу
     const [filter, setFilter] = useState<filterType>('all')
@@ -62,7 +67,7 @@ export const TodolistItem = ({title, tasks, date, setTasks}: Props) => {
             <h3>{title}</h3>
             <div>
                 <input/>
-                <Button title={"+"}/>
+                <Button title={"+"} onClickFunction={() => {addTask()}}/>
             </div>
             {taskList}
             <div>

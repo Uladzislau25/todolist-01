@@ -1,21 +1,22 @@
 import './App.css'
 import {TodolistItem} from './TodolistItem'
 import {useState} from "react";
+import {v1} from "uuid";
 
 export type Task = {
-    id: number
+    id: string;
     title: string
     isDone: boolean
 }
 export const App = () => {
 
-    const [tasks, setTasks] = useState<Task[]>( [
-        {id: 1, title: 'HTML&CSS', isDone: true},
-        {id: 2, title: 'JS', isDone: true},
-        {id: 3, title: 'ReactJS', isDone: false},
-        {id: 4, title: 'Redux', isDone: false},
-        {id: 5, title: 'Typescript', isDone: false},
-        {id: 6, title: 'RTK query', isDone: false},
+    const [tasks, setTasks] = useState<Task[]>([
+        {id: v1(), title: 'HTML&CSS', isDone: true},
+        {id: v1(), title: 'JS', isDone: true},
+        {id: v1(), title: 'ReactJS', isDone: false},
+        {id: v1(), title: 'Redux', isDone: false},
+        {id: v1(), title: 'Typescript', isDone: false},
+        {id: v1(), title: 'RTK query', isDone: false},
     ])
 
 
@@ -26,7 +27,7 @@ export const App = () => {
                 tasks={tasks}
                 date="27.01.2027"
                 setTasks={setTasks}
-              />
+            />
         </div>
     )
 }
