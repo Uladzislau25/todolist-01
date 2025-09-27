@@ -22,11 +22,13 @@ export const TodolistItem = ({title, tasks, date, setTasks}: Props) => {
         })
         setTasks(filteredTasks);
     }
- const addTask = () => {
-        let newTask = {id: v1(), title: 'New Task', isDone: false};
+    const [newTaskTitle, setNewTaskTitle] = useState('')
+
+    const addTask = (title: string) => {
+        let newTask = {id: v1(), title, isDone: false};
         let newTasks = [newTask, ...tasks];
         setTasks(newTasks);
- }
+    }
 
     // Фильтрация тасок по типу
     const [filter, setFilter] = useState<filterType>('all')
@@ -66,8 +68,24 @@ export const TodolistItem = ({title, tasks, date, setTasks}: Props) => {
         <div>
             <h3>{title}</h3>
             <div>
-                <input/>
-                <Button title={"+"} onClickFunction={() => {addTask()}}/>
+                <input
+                    value={newTaskTitle}
+                    onChange={(e) => {
+                        setNewTaskTitle(e.target.value)
+                    }}
+                    onKeyPress={(e)=>{
+                        if(e.key === 'Enter'){
+                            addTask(newTaskTitle);
+                            setNewTaskTitle("")
+                        }
+                    }}
+                />
+                <Button
+                    title={"+"}
+                    onClickFunction={() => {
+                        addTask(newTaskTitle);
+                        setNewTaskTitle("")
+                    }}/>
             </div>
             {taskList}
             <div>
