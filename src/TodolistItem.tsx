@@ -44,6 +44,11 @@ export const TodolistItem = ({title, tasks, date, setTasks}: Props) => {
         }
     }
 
+    const changeTaskStatus = (id: Task['id'], newTaskStatus: Task["isDone"])=> {
+        const nextState:Task[] = tasks.map(t => t.id === id ? {...t, isDone: newTaskStatus } : t )
+        setTasks(nextState)
+    }
+
     // Фильтрация тасок по типу
     const [filter, setFilter] = useState<filterType>('all')
     const changeFilter = (filter: filterType) => {
@@ -64,9 +69,14 @@ export const TodolistItem = ({title, tasks, date, setTasks}: Props) => {
     const taskList = filterTasks.length === 0 ? <span>is empty</span> :
         <ul>
             {filterTasks.map(task => {
+                const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+                    changeTaskStatus(task.id, e.currentTarget.checked)
+                }
                 return (
                     <li key={task.id}>
-                        <input type="checkbox" checked={task.isDone}/>
+                        <input type="checkbox"
+                               onChange={changeTaskStatusHandler}
+                               checked={task.isDone} />
                         <span>{task.title}</span>
                         <Button title={'x'} onClickFunction={() => {
                             deleteTask(task.id)
