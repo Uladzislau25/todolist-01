@@ -1,37 +1,28 @@
-import {Task} from "./App";
+import {filterType, Task} from "./App";
 import {Button} from "./button.tsx";
 import {ChangeEvent, useState, KeyboardEvent} from "react";
-import {v1} from "uuid";
 
 
 type Props = {
     title: string
     tasks: Task[]
     date?: string
-    setTasks: (tasks: Task[]) => void
+    filter: filterType
+
+    deleteTask: (taskId: string) => void
+    addTask: (task: string) => void
+    changeTaskStatus: (taskId: Task["id"], newTaskStatus: Task['isDone']) => void
+    changeFilter: (filter: filterType) => void
 }
-type filterType = 'all' | 'active' | 'completed' | 'deleted';
 
 
-export const TodolistItem = ({title, tasks, date, setTasks}: Props) => {
 
-    // Удаление тасок по Id
-    const deleteTask = (taskId: string) => {
-        const filteredTasks = tasks.filter(task => {
-            return task.id !== taskId
-        })
-        setTasks(filteredTasks);
-    }
+export const TodolistItem = ({title, tasks, filter, date, deleteTask, addTask, changeTaskStatus, changeFilter}: Props) => {
 
-    // Добавление новых тасок
     const [newTaskTitle, setNewTaskTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
 
-    const addTask = (title: string) => {
-        let newTask = {id: v1(), title, isDone: false};
-        let newTasks = [newTask, ...tasks];
-        setTasks(newTasks);
-    }
+
     const addTaskHandler = () => {
         const trimNewTaskTitle = newTaskTitle.trim()
          if (trimNewTaskTitle !== '') {
@@ -41,6 +32,8 @@ export const TodolistItem = ({title, tasks, date, setTasks}: Props) => {
             setError('Title is required');
          }
     }
+
+
     const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setNewTaskTitle(e.target.value)
         setError(null)
@@ -52,34 +45,10 @@ export const TodolistItem = ({title, tasks, date, setTasks}: Props) => {
         }
     }
 
-    const changeTaskStatus = (id: Task['id'], newTaskStatus: Task["isDone"])=> {
-        const nextState:Task[] = tasks.map(t => t.id === id ? {...t, isDone: newTaskStatus } : t )
-        setTasks(nextState)
-    }
 
-    // Фильтрация тасок по типу
-    const [filter, setFilter] = useState<filterType>('all')
-    const changeFilter = (filter: filterType) => {
-        setFilter(filter)
-    }
-    let filterTasks = tasks
-    if (filter === 'active') {
-        filterTasks = tasks.filter(task => !task.isDone)
-    }
-    if (filter === 'completed') {
-        filterTasks = tasks.filter(task => task.isDone)
-    }
-    if (filter === 'deleted') {
-        filterTasks = []
-    }
-
-
-
-
-    // Создание и отрисовка списка тасок
-    const taskList = filterTasks.length === 0 ? <span>is empty</span> :
+    const taskList = tasks.length === 0 ? <span>is empty</span> :
         <ul>
-            {filterTasks.map(task => {
+            {tasks.map(task => {
                 const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
                     changeTaskStatus(task.id, e.currentTarget.checked)
                 }
