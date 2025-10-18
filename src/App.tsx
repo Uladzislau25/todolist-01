@@ -129,6 +129,8 @@ export const App = () => {
                 changeTaskStatus={changeTaskStatus}
                 changeFilter={changeFilter}
                 deleteTodolist={deleteTodolist}
+                changeTaskTitle={changeTaskTitle}
+                changeTodolistTitle={changeTodolistTitle}
             />
         )
     })
