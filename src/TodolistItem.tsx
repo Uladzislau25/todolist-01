@@ -1,6 +1,7 @@
 import {filterType, Task, TodolistType} from "./App";
 import {Button} from "./button.tsx";
-import {ChangeEvent, useState, KeyboardEvent} from "react";
+import {ChangeEvent} from "react";
+import {CreateItemForm} from "./CreateItemForm.tsx";
 
 
 type Props = {
@@ -19,34 +20,7 @@ type Props = {
 
 
 
-export const TodolistItem = ({title, tasks, filter, date, todolistId, deleteTask, addTask, changeTaskStatus, changeFilter, deleteTodolist}: Props) => {
-
-    const [newTaskTitle, setNewTaskTitle] = useState('')
-    const [error, setError] = useState<string | null>(null)
-
-
-    const addTaskHandler = () => {
-        const trimNewTaskTitle = newTaskTitle.trim()
-         if (trimNewTaskTitle !== '') {
-             addTask(trimNewTaskTitle, todolistId);
-             setNewTaskTitle("")
-         } else {
-            setError('Title is required');
-         }
-    }
-
-
-    const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setNewTaskTitle(e.target.value)
-        setError(null)
-    }
-    const onKeyUpHandler = (e: KeyboardEvent) => {
-        if (e.key === 'Enter') {
-            addTask(newTaskTitle, todolistId);
-            setNewTaskTitle("")
-        }
-    }
-
+export const TodolistItem = ({title, tasks, filter, date, todolistId, deleteTask, changeTaskStatus, changeFilter, deleteTodolist}: Props) => {
 
     const taskList = tasks.length === 0 ? <span>is empty</span> :
         <ul>
@@ -71,18 +45,7 @@ export const TodolistItem = ({title, tasks, filter, date, todolistId, deleteTask
     return (
         <div>
             <h3>{title} <Button title={"x"} onClickFunction={()=> deleteTodolist(todolistId)}/></h3>
-            <div>
-                <input
-                    value={newTaskTitle}
-                    onChange={onNewTitleChangeHandler}
-                    onKeyUp={onKeyUpHandler}
-                    className={error? 'error' : ''}
-                />
-                <Button
-                    title={"+"}
-                    onClickFunction={addTaskHandler}/>
-                {error && <div className={'error-message'}>{error}</div>}
-            </div>
+            <CreateItemForm createItem={()=>{}}/>
             {taskList}
             <div>
                 <Button className = {filter === 'all'? "btn-filter-active": ""}

@@ -109,8 +109,6 @@ export const App = () => {
         }
         return taskForRender
     }
-
-
     const todolistsComponents = todolists.map(tl => {
       return (  <TodolistItem
                     key = {tl.todolistId}
@@ -128,7 +126,6 @@ export const App = () => {
         />
       )
     })
-
     return (
         <div className="app">
             {todolistsComponents}
