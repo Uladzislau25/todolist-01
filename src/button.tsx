@@ -6,8 +6,8 @@ type Props = {
 }
 export const Button = (({title, onClickFunction, className, disabled}: Props) => {
     return (
-            <button
-                disabled={disabled}
-                className={className} onClick={onClickFunction}>{title}</button>
+        <button
+            disabled={disabled}
+            className={className} onClick={onClickFunction}>{title}</button>
     )
 });
